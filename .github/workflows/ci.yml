@@ -1,0 +1,53 @@
+name: React Native CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.20.4]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Linter
+        run: npm lint
+
+      - name: Run Tests
+        run: npm test
+
+      # Android 빌드 (옵션)
+      - name: Build Android
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      # iOS 빌드 (옵션, macOS 런너 필요)
+      - name: Build iOS
+        if: runner.os == 'macOS'
+        run: |
+          cd ios
+          pod install
+          xcodebuild -workspace YourProject.xcworkspace -scheme YourProject -sdk iphonesimulator -configuration Debug build
+
+
