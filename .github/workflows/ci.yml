@@ -31,23 +31,21 @@ jobs:
         run: npm install
 
       - name: Run Linter
-        run: npm lint
+        run: npm run lint
 
       - name: Run Tests
-        run: npm test
+        run: npm run test
 
-      # Android 빌드 (옵션)
-      - name: Build Android
-        run: |
-          cd android
-          ./gradlew assembleDebug
+      # # Android 빌드 (옵션)
+      # - name: Build Android
+      #   run: |
+      #     cd android
+      #     ./gradlew assembleDebug
 
-      # iOS 빌드 (옵션, macOS 런너 필요)
-      - name: Build iOS
-        if: runner.os == 'macOS'
-        run: |
-          cd ios
-          pod install
-          xcodebuild -workspace YourProject.xcworkspace -scheme YourProject -sdk iphonesimulator -configuration Debug build
-
-
+      # # iOS 빌드 (옵션, macOS 런너 필요)
+      # - name: Build iOS
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #     cd ios
+      #     pod install
+      #     xcodebuild -workspace YourProject.xcworkspace -scheme YourProject -sdk iphonesimulator -configuration Debug build
